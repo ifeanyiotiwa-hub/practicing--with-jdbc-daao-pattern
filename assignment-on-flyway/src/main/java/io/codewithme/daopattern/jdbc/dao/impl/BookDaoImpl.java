@@ -1,10 +1,10 @@
 package io.codewithme.daopattern.jdbc.dao.impl;
 
+import io.codewithme.daopattern.jdbc.dao.service.AuthorDao;
 import io.codewithme.daopattern.jdbc.dao.service.BookDao;
 import io.codewithme.daopattern.jdbc.entity.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
@@ -19,9 +19,11 @@ public class BookDaoImpl implements BookDao {
     
     public static final String SAVE_BOOK = "INSERT INTO book(title, isbn, author_id, publisher) values (?, ?, ?, ?)";
     private final DataSource dataSource;
+    private final AuthorDao authorDao;
     
-    public BookDaoImpl(DataSource dataSource) {
+    public BookDaoImpl(DataSource dataSource, AuthorDao authorDao) {
         this.dataSource = dataSource;
+        this.authorDao = authorDao;
     }
     
     @Override
@@ -62,7 +64,10 @@ public class BookDaoImpl implements BookDao {
             ps = connection.prepareStatement(SAVE_BOOK);
             ps.setString(1, book.getTitle());
             ps.setString(2, book.getIsbn());
-            ps.setLong(3, book.getAuthorId());
+            
+            if (book.getAuthorId() != null) {
+                ps.setLong(3, book.getAuthorId().getId());
+            }
             ps.setString(4, book.getPublisher());
             ps.execute();
             
@@ -127,7 +132,13 @@ public class BookDaoImpl implements BookDao {
                                                      " id = ?");
             ps.setString(1,book.getTitle());
             ps.setString(2,book.getIsbn());
-            ps.setLong(3,book.getAuthorId());
+            
+            if (book.getAuthorId() != null) {
+                ps.setLong(3,book.getAuthorId().getId());
+            } {
+                ps.setNull(3, -5);
+            }
+            
             ps.setString(4,book.getPublisher());
             ps.setLong(5, book.getId());
             ps.execute();
@@ -155,7 +166,12 @@ public class BookDaoImpl implements BookDao {
                                                      " id = ?");
             ps.setString(1,book.getTitle());
             ps.setString(2,book.getIsbn());
-            ps.setLong(3,book.getAuthorId());
+            
+            if (book.getAuthorId() != null) {
+                ps.setLong(3,book.getAuthorId().getId());
+            } else {
+                ps.setNull(3, -5);
+            }
             ps.setString(4,book.getPublisher());
             ps.setLong(5, id);
             ps.execute();
@@ -244,7 +260,7 @@ public class BookDaoImpl implements BookDao {
         book.setId(rs.getLong("id"));
         book.setTitle(rs.getString("title"));
         book.setIsbn(rs.getString("isbn"));
-        book.setAuthorId(rs.getLong("author_id"));
+        book.setAuthorId(authorDao.getById(rs.getLong("author_id")));
         book.setPublisher(rs.getString("publisher"));
         LOG.info("Saved Book: \n{}", book);
         return book;

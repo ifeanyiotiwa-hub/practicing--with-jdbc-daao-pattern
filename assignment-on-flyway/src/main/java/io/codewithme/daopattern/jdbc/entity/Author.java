@@ -7,7 +7,7 @@ import java.util.StringJoiner;
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, updatable = false, columnDefinition = "VARCHAR(36)")
+    @Column(name = "id", nullable = false, columnDefinition = "BIGINT")
 //    @Type(type = "org.hibernate.type.UUIDCharType")
     private Long id;
     

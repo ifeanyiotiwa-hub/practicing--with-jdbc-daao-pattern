@@ -27,7 +27,9 @@ public class MySQLIntegrationTest {
     
     @Test
     public void testBookSaves() {
-        Book newBook = new Book("JPA Remastered", "1234",1L, "Oreilly");
+        Author author = new Author();
+        author.setId(1L);
+        Book newBook = new Book("JPA Remastered", "1234",author, "Oreilly");
         LOG.warn("newBook {}", newBook);
         Book savedBook = bookRepository.save(newBook);
         LOG.info("savedBook {}",savedBook);
