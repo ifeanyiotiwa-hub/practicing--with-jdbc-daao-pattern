@@ -1,0 +1,33 @@
+MYSQL_HOST: 127.0.0.1
+
+
+spring:
+  sql:
+    init:
+      mode: always
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST}:3306/bookdb2?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: bookuser
+    password: bookuser
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+  flyway:
+    user: bookadmin
+    password: bookadmin
+    locations:
+      - classpath:db/migration/common
+      - classpath:db/migration/{vendor}
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          description:
+            sql: debug
