@@ -85,7 +85,7 @@ public class Book {
     
     @Override
     public String toString() {
-        return new StringJoiner(", ", Book.class.getSimpleName() + "= \n\t{", "\n\t}")
+        return new StringJoiner("", "\n" + Book.class.getSimpleName() + "= \n\t{\n", "\n\t}")
                 .add("\t\t\"id\": \"" + id + "\",\n")
                 .add("\t\t\"title\": \"" + title + "\",\n")
                 .add("\t\t\"isbn\": \"" + isbn + "\",\n")

@@ -1,9 +1,11 @@
 package io.winnie.usingspringjdbctemplate.dao.persistence.impl;
 
 import io.winnie.usingspringjdbctemplate.dao.AuthorDao;
+import io.winnie.usingspringjdbctemplate.dao.persistence.extractor.AuthorResultSetExtractor;
 import io.winnie.usingspringjdbctemplate.dao.persistence.mapper.AuthorMapper;
 import io.winnie.usingspringjdbctemplate.entity.Author;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +20,15 @@ public class AuthorDaoImpl implements AuthorDao {
     
     @Override
     public Author getById(Long id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM author WHERE id = ?", getRowMapper(),id);
+        String sql = "SELECT author.id as id, first_name, last_name, book.id as id, title, isbn, publisher from " +
+                             "author left outer join book on author.id = book.author_id where author_id = ?";
+        //return jdbcTemplate.queryForObject("SELECT * FROM author WHERE id = ?", getRowMapper(),id);
+        
+        return jdbcTemplate.query(sql,getAuthorResultSetExtractor(), id);
+    }
+    
+    private ResultSetExtractor<Author> getAuthorResultSetExtractor() {
+        return new AuthorResultSetExtractor();
     }
     
     @Override

@@ -1,8 +1,6 @@
 package io.winnie.usingspringjdbctemplate.entity;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 import java.util.StringJoiner;
 
 @Entity
@@ -14,6 +12,9 @@ public class Author {
     
     private String firstName;
     private String lastName;
+    
+    @Transient
+    private List<Book> books;
     
     public Long getId() {
         return id;
@@ -39,12 +40,21 @@ public class Author {
         this.lastName = lastName;
     }
     
+    public List<Book> getBooks() {
+        return books;
+    }
+    
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+    
     @Override
     public String toString() {
-        return new StringJoiner("", Author.class.getSimpleName() + "= \n    {\n", "\n    }")
-                .add("\"id\": \"" + id + "\",\n")
-                .add("\"firstName\": \"" + firstName + "\",\n")
-                .add("\"lastName\": \"" + lastName + "\"")
+        return new StringJoiner("", "\n" + Author.class.getSimpleName() + "= \n    {\n", "\n    }")
+                .add("\t\t\"id\": \"" + id + "\",\n")
+                .add("\t\t\"firstName\": \"" + firstName + "\",\n")
+                .add("\t\t\"lastName\": \"" + lastName + "\",\n")
+                .add("\t\t\"books\": \"" + books + "\"")
                 .toString();
     }
 }
