@@ -2,7 +2,11 @@ package io.winnie.usingspringjdbctemplate.dao;
 
 import io.winnie.usingspringjdbctemplate.entity.Book;
 
+import java.util.List;
+
 public interface BookDao {
+    List<Book> findAllBooks();
+    
     Book getById(Long id);
     
     Book findByTitle(String title);

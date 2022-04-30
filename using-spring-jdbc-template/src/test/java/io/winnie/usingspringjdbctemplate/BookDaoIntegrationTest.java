@@ -2,13 +2,16 @@ package io.winnie.usingspringjdbctemplate;
 
 
 import io.winnie.usingspringjdbctemplate.dao.BookDao;
+import io.winnie.usingspringjdbctemplate.dao.persistence.impl.BookDaoJDBCTemplateImpl;
 import io.winnie.usingspringjdbctemplate.entity.Book;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -21,8 +24,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class BookDaoIntegrationTest {
     
     @Autowired
-    BookDao bookdao;
+    private JdbcTemplate jdbcTemplate;
+    private BookDao bookdao;
     
+    @BeforeEach
+    void setUp() {
+        bookdao = new BookDaoJDBCTemplateImpl(jdbcTemplate);
+    }
     
     @Test
     void testGetById() {

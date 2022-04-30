@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class BookDaoJDBCTemplateImpl implements BookDao {
     
@@ -14,6 +16,11 @@ public class BookDaoJDBCTemplateImpl implements BookDao {
     
     public BookDaoJDBCTemplateImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+    
+    @Override
+    public List<Book> findAllBooks() {
+        return null;
     }
     
     @Override
