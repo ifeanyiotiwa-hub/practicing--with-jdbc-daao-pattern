@@ -8,11 +8,11 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BookDaoImpl implements BookDao {
+public class BookDaoJDBCTemplateImpl implements BookDao {
     
     private final JdbcTemplate jdbcTemplate;
     
-    public BookDaoImpl(JdbcTemplate jdbcTemplate) {
+    public BookDaoJDBCTemplateImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
     
